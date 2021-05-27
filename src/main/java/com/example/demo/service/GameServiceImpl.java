@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,28 +25,35 @@ public class GameServiceImpl implements  IGameService{
     @Autowired
     DataDeck data;
 
+
     @Override
     public Game init() {
-        this.getGame().setDeck(getShuffleDeck(data.getDeck()));
-        Card firstCard = this.getGame().getDeck().get(0);
-        Suit suit = firstCard.getSuit();
-        this.getGame().setTrump(suit);
-        Player player = new Player("Player", null);
-        Player computer = new Player("Computer", null);
-        player.setCardsOnHand(giveCards(this.getGame().getDeck(), 6));
-        this.getGame().setFirstPlayer(player);
-        System.out.println("Dergai");
-        return game;
+        deck = data.getDeck();
+        System.out.println(deck.size());
+        return null;
     }
-    public List<Card> giveCards(List<Card> cards, int num){
-        List<Card> cardsToGive = this.getGame().getDeck().subList(0, num);
-        for (int i = 0; i < num; i++) {
-            this.getGame().getDeck().remove(i);
-        }
-        return cardsToGive;
+    public Card giveCard(){
+        return deck.get(0);
     }
-    public List<Card> getShuffleDeck(List<Card> deck) {
+    public void shuffleDeck(){
         Collections.shuffle(deck);
-        return deck;
+    }
+    public void removeCard(Card card){
+        deck.remove(card);
+    }
+    public int countDeck(){
+        if (deck==null){
+            return 0;
+        }
+        return deck.size();
+    }
+    public List<Card> giveMeCards(int amount){
+        List<Card> refill = new ArrayList<>();
+        for (int i = 0; i < amount; i++) {
+            Card card = giveCard();
+            refill.add(card);
+            removeCard(card);
+        }
+        return refill;
     }
 }
