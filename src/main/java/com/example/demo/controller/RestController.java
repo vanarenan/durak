@@ -16,8 +16,8 @@ public class RestController {
     GameServiceImpl service;
 
     @RequestMapping("/init")
-    public Game initGame(){
-        return service.init();
+    public void initGame(){
+        service.init();
     }
     @RequestMapping("/getcard")
     public Card getCard(){

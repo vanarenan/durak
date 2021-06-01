@@ -10,9 +10,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Data
 @NoArgsConstructor
@@ -20,26 +18,27 @@ import java.util.List;
 public class GameServiceImpl implements  IGameService{
 
     private Game game;
-    private List<Card> deck;
+    private Deque<Card> deck;
 
     @Autowired
     DataDeck data;
 
 
     @Override
-    public Game init() {
-        deck = data.getDeck();
+    public void init() {
+        deck = new LinkedList<>(data.getDeck());
         System.out.println(deck.size());
-        return null;
     }
     public Card giveCard(){
-        return deck.get(0);
+        return deck.poll();
     }
     public void shuffleDeck(){
-        Collections.shuffle(deck);
+        List<Card> list = new ArrayList<>(deck);
+        Collections.shuffle(list);
+        deck = new LinkedList<>(list);
     }
     public void removeCard(Card card){
-        deck.remove(card);
+        deck.removeFirstOccurrence(card);
     }
     public int countDeck(){
         if (deck==null){
@@ -50,7 +49,7 @@ public class GameServiceImpl implements  IGameService{
     public List<Card> giveMeCards(int amount){
         List<Card> refill = new ArrayList<>();
         for (int i = 0; i < amount; i++) {
-            Card card = giveCard();
+            Card card = this.giveCard();
             refill.add(card);
             removeCard(card);
         }
