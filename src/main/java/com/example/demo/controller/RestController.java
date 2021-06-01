@@ -39,10 +39,10 @@ public class RestController {
     }
     @RequestMapping("/refill3")
     public List<Card> refill(){
-        return service.giveMeCards(3);
+        return service.giveMeCards();
     }
     @RequestMapping("/refill/{amount}")
     public List<Card> refill(@PathVariable("amount") int amount){
-        return service.giveMeCards(amount);
+        return service.giveMeCards();
     }
 }
