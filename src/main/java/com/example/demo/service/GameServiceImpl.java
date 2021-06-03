@@ -20,6 +20,8 @@ public class GameServiceImpl implements  IGameService{
     private Game game;
     private Deque<Card> deck;
     List<Card> refill = new ArrayList<>();
+    List<Card> refill1 = new ArrayList<>();
+
 
     @Autowired
     DataDeck data;
@@ -29,6 +31,7 @@ public class GameServiceImpl implements  IGameService{
     public void init() {
         deck = new LinkedList<>(data.getDeck());
         System.out.println(deck.size());
+        refill.clear();
     }
     public Card giveCard(){
         return deck.poll();
@@ -48,7 +51,10 @@ public class GameServiceImpl implements  IGameService{
         return deck.size();
     }
     public List<Card> giveMeCards(){
-            for (int i = 0; i <= 6 - refill.size(); i++) {
+        System.out.println(refill.size());
+        int cardsAmount = 6 - refill.size();
+        System.out.println(cardsAmount);
+        for (int i = 0; i < cardsAmount; i++) {
                 Card card = this.giveCard();
                 refill.add(card);
             }
