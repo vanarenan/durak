@@ -48,7 +48,7 @@ public class GameServiceImpl implements  IGameService{
         return deck.size();
     }
     public List<Card> giveMeCards(){
-            for (int i = 0; i < 6 - refill.size(); i++) {
+            for (int i = 0; i <= 6 - refill.size(); i++) {
                 Card card = this.giveCard();
                 refill.add(card);
             }
