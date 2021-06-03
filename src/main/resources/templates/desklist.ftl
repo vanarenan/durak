@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="<@spring.url '/style.css'/>"/>
     <title>Title</title>
 </head>
-<body bgcolor="green">
+<body>
 <h1><b>DESK LIST</b></h1>
 <h1><b>${count}</b></h1>
 <a href="/ui/init"><button>New game</button></a>

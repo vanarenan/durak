@@ -46,14 +46,14 @@ public class WebController {
     }
     @RequestMapping("/refill/{amount}")
     public String refill(Model model, @PathVariable("amount") int amount){
-        model.addAttribute("count", service.countDeck());
         model.addAttribute("list", service.giveMeCards());
+        model.addAttribute("count", service.countDeck());
         return "desklist";
     }
     @RequestMapping("/refill")
     public String refill(Model model){
-        model.addAttribute("count", service.countDeck());
         model.addAttribute("list", service.giveMeCards());
+        model.addAttribute("count", service.countDeck());
         return "desklist";
     }
 
