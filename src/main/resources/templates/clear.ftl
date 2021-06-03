@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/static/style.css" type="text/css">
-    <link rel="stylesheet" type="text/css" href="<@spring.url '/static/style.css'/>"/>
+    <link rel="stylesheet" type="text/css" href="<@spring.url '/style.css'/>"/>
     <title>Title</title>
 </head>
-<body>
+<body bgcolor="green">
 <h1><b>CLEAR</b></h1>
 <h1><b>${count}</b></h1>
 <a href="/ui/init"><button>New game</button></a>
