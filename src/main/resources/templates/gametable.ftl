@@ -10,43 +10,49 @@
 <body>
 <h1><b>GAME TABLE</b></h1>
 <h1><b>${count}</b></h1>
+<img src="/img/fulldeck/back.png" alt="card">
 <a href="/ui/init">
     <button>New game</button>
 </a>
 <#--<a href="/ui/getcard"><button>Get card</button></a>-->
 <a href="/ui/refill">
-    <button>Refill</button>
+    <button>Refill cards</button>
 </a>
 <div style="border: solid 3px black">
     <h2>COMP</h2>
-    <ul class="allCard">
+    <ul>
         <#list listComp as card>
-            <li><img src="${card.img}" alt="card"></li>
+            <li>
+                <img src="${card.img}" alt="card">
+            </li>
         </#list>
     </ul>
+</div>
     <div>
-
-
         <div style="border: solid 3px black">
             <h2>Comp move</h2>
-            <ul class="allCard">
+            <ul>
                 <#list compMove as card>
-                    <li><img src="${card.img}" alt="card"></li>
+                    <li>
+                        <img src="${card.img}" alt="card">
+                    </li>
                 </#list>
             </ul>
         </div>
         <div style="border: solid 3px black">
             <h2>My move</h2>
-            <ul class="allCard">
+            <ul>
                 <#list myMove as card>
-                    <li><img src="${card.img}" alt="card"></li>
+                    <li>
+                        <img src="${card.img}" alt="card">
+                    </li>
                 </#list>
             </ul>
         </div>
-
+    </div>
         <div style="border: solid 3px black">
             <h2>ME</h2>
-            <ul class="allCard">
+            <ul>
                 <#list list as card>
                     <li>
                         <a href="/ui/pick/${card.suit}/${card.nominal}">
@@ -55,9 +61,6 @@
                     </li>
                 </#list>
             </ul>
-            <#--    <a href="/web/cards/pick">
-                    <img src="/img/tittle.png" alt="1111">
-                </a>-->
         </div>
 </body>
 </html>

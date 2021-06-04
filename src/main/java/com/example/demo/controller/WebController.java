@@ -23,19 +23,14 @@ public class WebController {
     @RequestMapping("/desk")
     String getDesk(Model model){
         model.addAttribute("count", service.countDeck());
-    return "clear";
+    return "newgame";
 }
     @RequestMapping("/init")
     public String initGame(Model model){
         service.init();
         service.shuffleDeck();
         model.addAttribute("count", service.countDeck());
-        return "clear";
-    }
-    @RequestMapping("/getcard")
-    public String getCard(Model model){
-        model.addAttribute("card", service.giveCard());
-        return "desk";
+        return "newgame";
     }
     @RequestMapping("/shuffle")
     public String shuffleDeck(Model model){
@@ -44,20 +39,21 @@ public class WebController {
         Card card = new Card();
         card.setImg("/img/fulldeck/back.png");
         model.addAttribute("card", card);
-        return "desk";
+        return "gametable";
     }
     @RequestMapping("/refill/{amount}")
     public String refill(Model model, @PathVariable("amount") int amount){
         model.addAttribute("list", service.giveMeCards());
         model.addAttribute("count", service.countDeck());
-        return "desklist";
+        return "gametable";
     }
     @RequestMapping("/refill")
     public String refill(Model model){
         model.addAttribute("list", service.giveMeCards());
         model.addAttribute("listComp", service.giveCompCards());
+        model.addAttribute("myMove", service.getMyMove());
         model.addAttribute("count", service.countDeck());
-        return "desklist";
+        return "desk";
     }
     @RequestMapping("/pick/{suit}/{nominal}")
     public String pick(Model model,

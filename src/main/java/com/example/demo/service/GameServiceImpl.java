@@ -88,8 +88,7 @@ public class GameServiceImpl implements  IGameService{
         return myPick;
     }
     public Card getCard(Suit suit, Nominal nominal) {
-
-        System.out.println(suit + ":" + nominal);
+     /*   System.out.println(suit + ":" + nominal);*/
         Card myPick = refill.stream()
                 .filter(card -> card.getNominal().equals(nominal))
                 .filter(card -> card.getSuit().equals(suit))
@@ -97,7 +96,7 @@ public class GameServiceImpl implements  IGameService{
                 .orElse(Card.builder().img("/img/fulldeck/back.png").build());
         refill.remove(myPick);
         myMove.add(myPick);
-        System.out.println(myPick);
+        System.out.println(myMove);
         return myPick;
     }
 }
