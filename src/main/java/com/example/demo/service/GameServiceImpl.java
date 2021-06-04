@@ -1,10 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.data.DataDeck;
-import com.example.demo.model.Card;
-import com.example.demo.model.Game;
-import com.example.demo.model.Player;
-import com.example.demo.model.Suit;
+import com.example.demo.model.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +17,10 @@ public class GameServiceImpl implements  IGameService{
     private Game game;
     private Deque<Card> deck;
     List<Card> refill = new ArrayList<>();
-    List<Card> refill1 = new ArrayList<>();
+    List<Card> refillComp = new ArrayList<>();
+    List<Card> myMove = new ArrayList<>();
+    List<Card> compMove = new ArrayList<>();
+
 
 
     @Autowired
@@ -30,8 +30,12 @@ public class GameServiceImpl implements  IGameService{
     @Override
     public void init() {
         deck = new LinkedList<>(data.getDeck());
-        System.out.println(deck.size());
         refill.clear();
+        refillComp.clear();
+        myMove.clear();
+        compMove.clear();
+        refillComp.clear();
+
     }
     public Card giveCard(){
         return deck.poll();
@@ -51,14 +55,21 @@ public class GameServiceImpl implements  IGameService{
         return deck.size();
     }
     public List<Card> giveMeCards(){
-        System.out.println(refill.size());
         int cardsAmount = 6 - refill.size();
-        System.out.println(cardsAmount);
         for (int i = 0; i < cardsAmount; i++) {
                 Card card = this.giveCard();
                 refill.add(card);
             }
             return refill;
+
+    }
+    public List<Card> giveCompCards(){
+        int cardsAmount = 6 - refillComp.size();
+        for (int i = 0; i < cardsAmount; i++) {
+            Card card = this.giveCard();
+            refillComp.add(card);
+        }
+        return refillComp;
 
     }
     public List<Card> addCard(){
@@ -67,5 +78,26 @@ public class GameServiceImpl implements  IGameService{
             refill.add(card);
         }
         return refill;
+    }
+
+    public Card getByImg(String img) {
+        Card myPick = refill.stream().filter(card -> card.getImg().equals(img))
+                .findFirst().orElse(null);
+        refill.remove(myPick);
+        myMove.add(myPick);
+        return myPick;
+    }
+    public Card getCard(Suit suit, Nominal nominal) {
+
+        System.out.println(suit + ":" + nominal);
+        Card myPick = refill.stream()
+                .filter(card -> card.getNominal().equals(nominal))
+                .filter(card -> card.getSuit().equals(suit))
+                .findAny()
+                .orElse(Card.builder().img("/img/fulldeck/back.png").build());
+        refill.remove(myPick);
+        myMove.add(myPick);
+        System.out.println(myPick);
+        return myPick;
     }
 }

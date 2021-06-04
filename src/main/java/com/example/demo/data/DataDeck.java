@@ -58,25 +58,25 @@ public class DataDeck {
                     new Card(Suit.T, Nominal.N10, 10, "/img/fulldeck/T10.png"),
                     new Card(Suit.C, Nominal.N10, 10, "/img/fulldeck/C10.png"),
 
-                    new Card(Suit.P, Nominal.J, 10, "/img/fulldeck/PJ.png"),
-                    new Card(Suit.H, Nominal.J, 10, "/img/fulldeck/HJ.png"),
-                    new Card(Suit.T, Nominal.J, 10, "/img/fulldeck/TJ.png"),
-                    new Card(Suit.C, Nominal.J, 10, "/img/fulldeck/CJ.png"),
+                    new Card(Suit.P, Nominal.J, 11, "/img/fulldeck/PJ.png"),
+                    new Card(Suit.H, Nominal.J, 11, "/img/fulldeck/HJ.png"),
+                    new Card(Suit.T, Nominal.J, 11, "/img/fulldeck/TJ.png"),
+                    new Card(Suit.C, Nominal.J, 11, "/img/fulldeck/CJ.png"),
 
-                    new Card(Suit.P, Nominal.Q, 10, "/img/fulldeck/PQ.png"),
-                    new Card(Suit.H, Nominal.Q, 10, "/img/fulldeck/HQ.png"),
-                    new Card(Suit.T, Nominal.Q, 10, "/img/fulldeck/TQ.png"),
-                    new Card(Suit.C, Nominal.Q, 10, "/img/fulldeck/CQ.png"),
+                    new Card(Suit.P, Nominal.Q, 12, "/img/fulldeck/PQ.png"),
+                    new Card(Suit.H, Nominal.Q, 12, "/img/fulldeck/HQ.png"),
+                    new Card(Suit.T, Nominal.Q, 12, "/img/fulldeck/TQ.png"),
+                    new Card(Suit.C, Nominal.Q, 12, "/img/fulldeck/CQ.png"),
 
-                    new Card(Suit.P, Nominal.K, 10, "/img/fulldeck/PK.png"),
-                    new Card(Suit.H, Nominal.K, 10, "/img/fulldeck/HK.png"),
-                    new Card(Suit.T, Nominal.K, 10, "/img/fulldeck/TK.png"),
-                    new Card(Suit.C, Nominal.K, 10, "/img/fulldeck/CK.png"),
+                    new Card(Suit.P, Nominal.K, 13, "/img/fulldeck/PK.png"),
+                    new Card(Suit.H, Nominal.K, 13, "/img/fulldeck/HK.png"),
+                    new Card(Suit.T, Nominal.K, 13, "/img/fulldeck/TK.png"),
+                    new Card(Suit.C, Nominal.K, 13, "/img/fulldeck/CK.png"),
 
-                    new Card(Suit.P, Nominal.A, 11, "/img/fulldeck/PA.png"),
-                    new Card(Suit.H, Nominal.A, 11, "/img/fulldeck/HA.png"),
-                    new Card(Suit.T, Nominal.A, 11, "/img/fulldeck/TA.png"),
-                    new Card(Suit.C, Nominal.A, 11, "/img/fulldeck/CA.png")
+                    new Card(Suit.P, Nominal.A, 14, "/img/fulldeck/PA.png"),
+                    new Card(Suit.H, Nominal.A, 14, "/img/fulldeck/HA.png"),
+                    new Card(Suit.T, Nominal.A, 14, "/img/fulldeck/TA.png"),
+                    new Card(Suit.C, Nominal.A, 14, "/img/fulldeck/CA.png")
             )
     );
 

@@ -26,6 +26,7 @@ public class RestController {
     @RequestMapping("/shuffle")
     public String shuffleDeck(){
         service.shuffleDeck();
+
         return "Shuffled";
     }
     @RequestMapping("/remove1")
