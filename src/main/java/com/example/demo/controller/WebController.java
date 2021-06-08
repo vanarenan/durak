@@ -67,6 +67,54 @@ public class WebController {
         model.addAttribute("compMove", service.getCompMove());
         return "gametable";
     }
+    @RequestMapping("/computermove")
+    public String pick(Model model){
+        service.getCompMoveMethod();
+        model.addAttribute("list", service.getRefill());
+        model.addAttribute("listComp", service.getRefillComp());
+        model.addAttribute("count", service.countDeck());
+        model.addAttribute("myMove", service.getMyMove());
+        model.addAttribute("compMove", service.getCompMove());
+        return "gametable";
+    }
+    @RequestMapping("/trash")
+    public String trash(Model model) {
+        service.throwTrash();
+        service.getRefill();
+        service.getRefillComp();
+        model.addAttribute("list", service.getRefill());
+        model.addAttribute("listComp", service.getRefillComp());
+        model.addAttribute("count", service.countDeck());
+        model.addAttribute("myMove", service.getMyMove());
+        model.addAttribute("compMove", service.getCompMove());
+        return "gametable";
+    }
+/*
+@RequestMapping("/ui/compmove")
+    public String trash(Model model) {
+        service.throwTrash();
+        service.getRefill();
+        service.getRefillComp();
+        model.addAttribute("list", service.getRefill());
+        model.addAttribute("listComp", service.getRefillComp());
+        model.addAttribute("count", service.countDeck());
+        model.addAttribute("myMove", service.getMyMove());
+        model.addAttribute("compMove", service.getCompMove());
+        return "gametable";
+    }
+@RequestMapping("/ui/mymove")
+    public String trash(Model model) {
+        service.throwTrash();
+        service.getRefill();
+        service.getRefillComp();
+        model.addAttribute("list", service.getRefill());
+        model.addAttribute("listComp", service.getRefillComp());
+        model.addAttribute("count", service.countDeck());
+        model.addAttribute("myMove", service.getMyMove());
+        model.addAttribute("compMove", service.getCompMove());
+        return "gametable";
+    }
+*/
 
 
 }

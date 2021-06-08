@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -20,7 +21,8 @@ public class GameServiceImpl implements  IGameService{
     List<Card> refillComp = new ArrayList<>();
     List<Card> myMove = new ArrayList<>();
     List<Card> compMove = new ArrayList<>();
-
+    Card empty = Card.builder().img("/img/fulldeck/back.png").build();
+    List<Nominal> nominals = new ArrayList<>();
 
 
     @Autowired
@@ -60,7 +62,7 @@ public class GameServiceImpl implements  IGameService{
                 Card card = this.giveCard();
                 refill.add(card);
             }
-            return refill;
+            return refill.stream().sorted(Comparator.comparing(Card::getValue)).collect(Collectors.toList());
 
     }
     public List<Card> giveCompCards(){
@@ -69,7 +71,7 @@ public class GameServiceImpl implements  IGameService{
             Card card = this.giveCard();
             refillComp.add(card);
         }
-        return refillComp;
+        return refillComp.stream().sorted(Comparator.comparing(Card::getValue)).collect(Collectors.toList());
 
     }
     public List<Card> addCard(){
@@ -88,15 +90,54 @@ public class GameServiceImpl implements  IGameService{
         return myPick;
     }
     public Card getCard(Suit suit, Nominal nominal) {
-     /*   System.out.println(suit + ":" + nominal);*/
-        Card myPick = refill.stream()
-                .filter(card -> card.getNominal().equals(nominal))
-                .filter(card -> card.getSuit().equals(suit))
-                .findAny()
-                .orElse(Card.builder().img("/img/fulldeck/back.png").build());
-        refill.remove(myPick);
-        myMove.add(myPick);
-        System.out.println(myMove);
+            Card myPick = refill.stream()
+                    .filter(card -> card.getNominal().equals(nominal))
+                    .filter(card -> card.getSuit().equals(suit))
+                    .findAny()
+                    .orElse(empty);
+        if (nominals.isEmpty() || nominals.contains(myPick.getNominal())) {
+            refill.remove(myPick);
+            myMove.add(myPick);
+            nominals.add(myPick.getNominal());
+        }
         return myPick;
     }
+
+    public void getCompMoveMethod() {
+        Card move = myMove.get(myMove.size()-1);
+        Card moveBack = fightBack(move, refillComp);
+        System.out.println(moveBack);
+        refillComp.remove(moveBack);
+        compMove.add(moveBack);
+        nominals.add(moveBack.getNominal());
+        System.out.println(compMove);
+
+    }
+
+    private Card fightBack(Card myMove, List<Card> compCards) {
+       Suit suit = myMove.getSuit();
+       List<Card> suits = refillComp.stream()
+               .filter(el -> el.getSuit().equals(suit))
+               .sorted(Comparator.comparing(Card::getValue))
+               .collect(Collectors.toList());
+       Card compMove = suits.stream().filter(el -> el.getValue() > myMove.getValue())
+               .findFirst().orElse(empty);
+       return compMove;
+    }
+
+    public void throwTrash() {
+        nominals.clear();
+        if (compMove.contains(empty)){
+            for (Card card:compMove) {
+                if (!card.equals(empty))
+                refillComp.add(card);
+            }
+            for (Card card:myMove)
+                refillComp.add(card);
+        }
+
+        compMove.clear();
+        myMove.clear();
+    }
+
 }
