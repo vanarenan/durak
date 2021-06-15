@@ -24,6 +24,9 @@
 <a href="/ui/trash">
     <button>Trash</button>
 </a>
+<a href="/ui/compturn">
+    <button>Comp turn</button>
+</a>
 <#--<a href="/ui/compmove">
     <button>Comp move</button>
 </a>

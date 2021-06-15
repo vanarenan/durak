@@ -23,6 +23,8 @@ public class GameServiceImpl implements  IGameService{
     List<Card> compMove = new ArrayList<>();
     Card empty = Card.builder().img("/img/fulldeck/back.png").build();
     List<Nominal> nominals = new ArrayList<>();
+    Boolean myTurn = true;
+    Boolean myGame = true;
 
 
     @Autowired
@@ -57,21 +59,31 @@ public class GameServiceImpl implements  IGameService{
         return deck.size();
     }
     public List<Card> giveMeCards(){
+        if (myMove.size() != 0 || compMove.size() != 0){
+            return refill.stream().sorted(Comparator.comparing(Card::getValue))
+                    .collect(Collectors.toList());
+        }
         int cardsAmount = 6 - refill.size();
         for (int i = 0; i < cardsAmount; i++) {
                 Card card = this.giveCard();
                 refill.add(card);
             }
-            return refill.stream().sorted(Comparator.comparing(Card::getValue)).collect(Collectors.toList());
+            return refill.stream().sorted(Comparator.comparing(Card::getValue))
+                    .collect(Collectors.toList());
 
     }
     public List<Card> giveCompCards(){
+        if (myMove.size() != 0 || compMove.size() != 0){
+            return refillComp.stream().sorted(Comparator.comparing(Card::getValue))
+                    .collect(Collectors.toList());
+        }
         int cardsAmount = 6 - refillComp.size();
         for (int i = 0; i < cardsAmount; i++) {
             Card card = this.giveCard();
             refillComp.add(card);
         }
-        return refillComp.stream().sorted(Comparator.comparing(Card::getValue)).collect(Collectors.toList());
+        return refillComp.stream().sorted(Comparator.comparing(Card::getValue))
+                .collect(Collectors.toList());
 
     }
     public List<Card> addCard(){
@@ -100,10 +112,20 @@ public class GameServiceImpl implements  IGameService{
             myMove.add(myPick);
             nominals.add(myPick.getNominal());
         }
+
+        if (nominals.isEmpty() || nominals.contains(myPick.getNominal())){
+        }
+        this.getCompMoveMethod();
+        if (compMove.contains(empty)) {
+        this.throwTrash();
+        }
         return myPick;
     }
 
     public void getCompMoveMethod() {
+        if (myMove.size() == compMove.size()){
+            return;
+        }
         Card move = myMove.get(myMove.size()-1);
         Card moveBack = fightBack(move, refillComp);
         System.out.println(moveBack);
@@ -138,6 +160,19 @@ public class GameServiceImpl implements  IGameService{
 
         compMove.clear();
         myMove.clear();
+        giveMeCards();
     }
-
+    public void compPick(){
+        Card card = refillComp.stream().sorted(Comparator.comparing(Card::getValue))
+                .findFirst().get();
+        if (myMove.size() != compMove.size()){
+            return;
+        }
+        myTurn = false;
+        refillComp.remove(card);
+        compMove.add(card);
+    }
+    public void flipTurn() {
+        myTurn = !myTurn;
+    }
 }

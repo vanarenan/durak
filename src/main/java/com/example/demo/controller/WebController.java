@@ -51,15 +51,24 @@ public class WebController {
     public String refill(Model model){
         model.addAttribute("list", service.giveMeCards());
         model.addAttribute("listComp", service.giveCompCards());
+        model.addAttribute("compMove", service.getCompMove());
         model.addAttribute("myMove", service.getMyMove());
         model.addAttribute("count", service.countDeck());
-        return "desk";
+        return "gametable";
     }
     @RequestMapping("/pick/{suit}/{nominal}")
     public String pick(Model model,
                        @PathVariable("suit") Suit suit,
                        @PathVariable("nominal") Nominal nominal){
         Card card = service.getCard(suit, nominal);
+        if (service.getCompMove().size() != service.getMyMove().size() + 1){
+            model.addAttribute("list", service.getRefill());
+            model.addAttribute("listComp", service.getRefillComp());
+            model.addAttribute("count", service.countDeck());
+            model.addAttribute("myMove", service.getMyMove());
+            model.addAttribute("compMove", service.getCompMove());
+            return "gametable";
+        }
         model.addAttribute("list", service.getRefill());
         model.addAttribute("listComp", service.getRefillComp());
         model.addAttribute("count", service.countDeck());
@@ -89,6 +98,27 @@ public class WebController {
         model.addAttribute("compMove", service.getCompMove());
         return "gametable";
     }
+@RequestMapping("/compturn")
+    public String compPick(Model model) {
+        service.compPick();
+        model.addAttribute("list", service.getRefill());
+        model.addAttribute("listComp", service.getRefillComp());
+        model.addAttribute("count", service.countDeck());
+        model.addAttribute("myMove", service.getMyMove());
+        model.addAttribute("compMove", service.getCompMove());
+        return "gametable";
+    }
+
+/*    @RequestMapping("/turn")
+    public String turn(Model model) {
+        service.flipTurn();
+        model.addAttribute("list", service.getRefill());
+        model.addAttribute("listComp", service.getRefillComp());
+        model.addAttribute("count", service.countDeck());
+        model.addAttribute("myMove", service.getMyMove());
+        model.addAttribute("compMove", service.getCompMove());
+        return "gametable";
+    }*/
 /*
 @RequestMapping("/ui/compmove")
     public String trash(Model model) {
