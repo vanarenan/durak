@@ -80,8 +80,8 @@ public class WebController {
     @RequestMapping("/trash")
     public String trash(Model model) {
         service.throwTrash();
-        service.getRefill();
-        service.getRefillComp();
+        service.giveMeCards();
+        service.giveCompCards();
         model.addAttribute("list", service.getRefill());
         model.addAttribute("listComp", service.getRefillComp());
         model.addAttribute("count", service.countDeck());
@@ -115,6 +115,7 @@ public class WebController {
         return "gametable";
     }
 */
+
 
 
 }

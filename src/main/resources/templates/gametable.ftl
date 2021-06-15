@@ -21,12 +21,15 @@
 <a href="/ui/computermove">
     <button>Computer's move</button>
 </a>
-<a href="/ui/compmove">
+<a href="/ui/trash">
+    <button>Trash</button>
+</a>
+<#--<a href="/ui/compmove">
     <button>Comp move</button>
 </a>
 <a href="/ui/mymove">
     <button>My move</button>
-</a>
+</a>-->
 <div style="border: solid 3px black">
     <h2>COMP</h2>
     <ul>
