@@ -30,6 +30,7 @@ public class WebController {
         service.init();
         service.shuffleDeck();
         model.addAttribute("count", service.countDeck());
+        model.addAttribute("trump", service.getTrumpCard());
         return "newgame";
     }
     @RequestMapping("/shuffle")
@@ -39,12 +40,14 @@ public class WebController {
         Card card = new Card();
         card.setImg("/img/fulldeck/back.png");
         model.addAttribute("card", card);
+        model.addAttribute("trump", service.getTrumpCard());
         return "gametable";
     }
     @RequestMapping("/refill/{amount}")
     public String refill(Model model, @PathVariable("amount") int amount){
         model.addAttribute("list", service.giveMeCards());
         model.addAttribute("count", service.countDeck());
+        model.addAttribute("trump", service.getTrumpCard());
         return "gametable";
     }
     @RequestMapping("/refill")
@@ -54,6 +57,7 @@ public class WebController {
         model.addAttribute("compMove", service.getCompMove());
         model.addAttribute("myMove", service.getMyMove());
         model.addAttribute("count", service.countDeck());
+        model.addAttribute("trump", service.getTrumpCard());
         return "gametable";
     }
     @RequestMapping("/pick/{suit}/{nominal}")
@@ -61,32 +65,13 @@ public class WebController {
                        @PathVariable("suit") Suit suit,
                        @PathVariable("nominal") Nominal nominal){
         Card card = service.getCard(suit, nominal);
-        if (service.getCompMove().size() == service.getMyMove().size()+1){
-            Card compCard = service.getCompMove().get(service.getCompMove().size()-1);
-            if (service.isMineGreater(card, compCard)){
-                service.getMyMove().add(card);
-                service.getRefill().remove(card);
-                model.addAttribute("list", service.getRefill());
-                model.addAttribute("listComp", service.getRefillComp());
-                model.addAttribute("count", service.countDeck());
-                model.addAttribute("myMove", service.getMyMove());
-                model.addAttribute("compMove", service.getCompMove());
-            }
-        }
-  /*      if (service.getCompMove().size() > service.getMyMove().size()){
-            model.addAttribute("list", service.getRefill());
-            model.addAttribute("listComp", service.getRefillComp());
-            model.addAttribute("count", service.countDeck());
-            model.addAttribute("myMove", service.getMyMove());
-            model.addAttribute("compMove", service.getCompMove());
-            return "gametable";
-        }*/
         if (service.getCompMove().size() != service.getMyMove().size() + 1){
             model.addAttribute("list", service.getRefill());
             model.addAttribute("listComp", service.getRefillComp());
             model.addAttribute("count", service.countDeck());
             model.addAttribute("myMove", service.getMyMove());
             model.addAttribute("compMove", service.getCompMove());
+            model.addAttribute("trump", service.getTrumpCard());
             return "gametable";
         }
         model.addAttribute("list", service.getRefill());
@@ -94,6 +79,7 @@ public class WebController {
         model.addAttribute("count", service.countDeck());
         model.addAttribute("myMove", service.getMyMove());
         model.addAttribute("compMove", service.getCompMove());
+        model.addAttribute("trump", service.getTrumpCard());
         return "gametable";
     }
     @RequestMapping("/computermove")
@@ -104,6 +90,7 @@ public class WebController {
         model.addAttribute("count", service.countDeck());
         model.addAttribute("myMove", service.getMyMove());
         model.addAttribute("compMove", service.getCompMove());
+        model.addAttribute("trump", service.getTrumpCard());
         return "gametable";
     }
     @RequestMapping("/trash")
@@ -116,6 +103,7 @@ public class WebController {
         model.addAttribute("count", service.countDeck());
         model.addAttribute("myMove", service.getMyMove());
         model.addAttribute("compMove", service.getCompMove());
+        model.addAttribute("trump", service.getTrumpCard());
         return "gametable";
     }
 @RequestMapping("/compturn")
@@ -126,6 +114,7 @@ public class WebController {
         model.addAttribute("count", service.countDeck());
         model.addAttribute("myMove", service.getMyMove());
         model.addAttribute("compMove", service.getCompMove());
+        model.addAttribute("trump", service.getTrumpCard());
         return "gametable";
     }
 

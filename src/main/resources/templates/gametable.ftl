@@ -11,6 +11,7 @@
 <h1><b>GAME TABLE</b></h1>
 <h1><b>${count}</b></h1>
 <img src="/img/fulldeck/back.png" alt="card">
+<img src="${trump.img}" alt="card">
 <a href="/ui/init">
     <button>New game</button>
 </a>

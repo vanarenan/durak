@@ -25,6 +25,8 @@ public class GameServiceImpl implements  IGameService{
     List<Nominal> nominals = new ArrayList<>();
     Boolean myTurn = true;
     Boolean myGame = true;
+    Suit trump = null;
+    Card trumpCard = empty;
 
 
     @Autowired
@@ -48,6 +50,13 @@ public class GameServiceImpl implements  IGameService{
         List<Card> list = new ArrayList<>(deck);
         Collections.shuffle(list);
         deck = new LinkedList<>(list);
+        trump = list.get(list.size()-1).getSuit();
+        trumpCard = list.get(list.size()-1);
+        for (Card card:list){
+            if (card.getSuit().equals(trump)){
+                card.setValue(card.getValue()+13);
+            }
+        }
     }
     public void removeCard(Card card){
         deck.removeFirstOccurrence(card);
@@ -66,7 +75,9 @@ public class GameServiceImpl implements  IGameService{
         int cardsAmount = 6 - refill.size();
         for (int i = 0; i < cardsAmount; i++) {
                 Card card = this.giveCard();
-                refill.add(card);
+                if (card != null){
+                    refill.add(card);
+                }
             }
             return refill.stream().sorted(Comparator.comparing(Card::getValue))
                     .collect(Collectors.toList());
@@ -80,7 +91,9 @@ public class GameServiceImpl implements  IGameService{
         int cardsAmount = 6 - refillComp.size();
         for (int i = 0; i < cardsAmount; i++) {
             Card card = this.giveCard();
-            refillComp.add(card);
+            if (card != null){
+                refillComp.add(card);
+            }
         }
         return refillComp.stream().sorted(Comparator.comparing(Card::getValue))
                 .collect(Collectors.toList());
@@ -89,7 +102,9 @@ public class GameServiceImpl implements  IGameService{
     public List<Card> addCard(){
         if (refill.size()<6) {
             Card card = this.giveCard();
-            refill.add(card);
+            if (card != null){
+                refill.add(card);
+            }
         }
         return refill;
     }
@@ -107,12 +122,22 @@ public class GameServiceImpl implements  IGameService{
                     .filter(card -> card.getSuit().equals(suit))
                     .findAny()
                     .orElse(empty);
+            if (compMove.size() > myMove.size()){
+                if (isMineGreater(myPick, compMove.get(compMove.size()-1))){
+                    System.out.println("GREATER");
+                    refill.remove(myPick);
+                    myMove.add(myPick);
+                    nominals.add(myPick.getNominal());
+                    return myPick;
+                } else {
+                    return null;
+                }
+            }
         if (nominals.isEmpty() || nominals.contains(myPick.getNominal())) {
             refill.remove(myPick);
             myMove.add(myPick);
             nominals.add(myPick.getNominal());
         }
-
         if (nominals.isEmpty() || nominals.contains(myPick.getNominal())){
         }
         this.getCompMoveMethod();
@@ -128,18 +153,16 @@ public class GameServiceImpl implements  IGameService{
         }
         Card move = myMove.get(myMove.size()-1);
         Card moveBack = fightBack(move, refillComp);
-        System.out.println(moveBack);
         refillComp.remove(moveBack);
         compMove.add(moveBack);
         nominals.add(moveBack.getNominal());
-        System.out.println(compMove);
 
     }
 
     private Card fightBack(Card myMove, List<Card> compCards) {
        Suit suit = myMove.getSuit();
        List<Card> suits = refillComp.stream()
-               .filter(el -> el.getSuit().equals(suit))
+               .filter(el -> el.getSuit().equals(suit) || el.getSuit().equals(trump))
                .sorted(Comparator.comparing(Card::getValue))
                .collect(Collectors.toList());
        Card compMove = suits.stream().filter(el -> el.getValue() > myMove.getValue())
@@ -150,22 +173,33 @@ public class GameServiceImpl implements  IGameService{
         Card card = compMove.get(compMove.size() - 1);
        Suit suit = card.getSuit();
        List<Card> allowed = refill.stream()
-               .filter(el -> el.getSuit().equals(suit))
+               .filter(el -> el.getSuit().equals(suit) || el.getSuit().equals(trump))
                .filter(el -> el.getValue() > card.getValue())
                .sorted(Comparator.comparing(Card::getValue))
                .collect(Collectors.toList());
+
        return allowed;
     }
     public boolean isMineGreater(Card mine, Card comp){
         if (mine.getSuit().equals(comp.getSuit())
                 && mine.getValue() > comp.getValue()){
+            System.out.println(true);
             return true;
         }
-    return false;
+        System.out.println(false);
+        return false;
     }
 
     public void throwTrash() {
         nominals.clear();
+        if (myMove.size() < compMove.size()){
+            for (Card card:compMove){
+                refill.add(card);
+            }
+            for (Card card:myMove) {
+                refill.add(card);
+            }
+        }
         if (compMove.contains(empty)){
             for (Card card:compMove) {
                 if (!card.equals(empty))
@@ -192,4 +226,7 @@ public class GameServiceImpl implements  IGameService{
     public void flipTurn() {
         myTurn = !myTurn;
     }
+    // TODO Определить чей ход
+
+
 }
