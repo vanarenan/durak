@@ -61,6 +61,26 @@ public class WebController {
                        @PathVariable("suit") Suit suit,
                        @PathVariable("nominal") Nominal nominal){
         Card card = service.getCard(suit, nominal);
+        if (service.getCompMove().size() == service.getMyMove().size()+1){
+            Card compCard = service.getCompMove().get(service.getCompMove().size()-1);
+            if (service.isMineGreater(card, compCard)){
+                service.getMyMove().add(card);
+                service.getRefill().remove(card);
+                model.addAttribute("list", service.getRefill());
+                model.addAttribute("listComp", service.getRefillComp());
+                model.addAttribute("count", service.countDeck());
+                model.addAttribute("myMove", service.getMyMove());
+                model.addAttribute("compMove", service.getCompMove());
+            }
+        }
+  /*      if (service.getCompMove().size() > service.getMyMove().size()){
+            model.addAttribute("list", service.getRefill());
+            model.addAttribute("listComp", service.getRefillComp());
+            model.addAttribute("count", service.countDeck());
+            model.addAttribute("myMove", service.getMyMove());
+            model.addAttribute("compMove", service.getCompMove());
+            return "gametable";
+        }*/
         if (service.getCompMove().size() != service.getMyMove().size() + 1){
             model.addAttribute("list", service.getRefill());
             model.addAttribute("listComp", service.getRefillComp());

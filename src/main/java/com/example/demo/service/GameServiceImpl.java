@@ -146,6 +146,23 @@ public class GameServiceImpl implements  IGameService{
                .findFirst().orElse(empty);
        return compMove;
     }
+ public List<Card> myPossibleFightBack() {
+        Card card = compMove.get(compMove.size() - 1);
+       Suit suit = card.getSuit();
+       List<Card> allowed = refill.stream()
+               .filter(el -> el.getSuit().equals(suit))
+               .filter(el -> el.getValue() > card.getValue())
+               .sorted(Comparator.comparing(Card::getValue))
+               .collect(Collectors.toList());
+       return allowed;
+    }
+    public boolean isMineGreater(Card mine, Card comp){
+        if (mine.getSuit().equals(comp.getSuit())
+                && mine.getValue() > comp.getValue()){
+            return true;
+        }
+    return false;
+    }
 
     public void throwTrash() {
         nominals.clear();
