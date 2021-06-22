@@ -6,12 +6,20 @@
     <link rel="stylesheet" href="/static/styles.css" type="text/css">
     <link rel="stylesheet" type="text/css" href="<@spring.url '/styles.css'/>"/>
     <title>Title</title>
+    <style>
+        h3 {
+            font-family: 'Times New Roman', Times, serif; /* Гарнитура текста */
+            font-size: 500%; /* Размер шрифта в процентах */
+        }
+    </style>
 </head>
 <body>
 <h1><b>GAME TABLE</b></h1>
 <h1><b>${count}</b></h1>
+    <h1 align="center" >  ${message} </h1>
 <img src="/img/fulldeck/back.png" alt="card">
 <img src="${trump.img}" alt="card">
+
 <a href="/ui/init">
     <button>New game</button>
 </a>
@@ -28,6 +36,8 @@
 <a href="/ui/compturn">
     <button>Comp turn</button>
 </a>
+
+
 <#--<a href="/ui/compmove">
     <button>Comp move</button>
 </a>

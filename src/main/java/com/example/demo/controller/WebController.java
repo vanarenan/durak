@@ -52,6 +52,7 @@ public class WebController {
     }
     @RequestMapping("/refill")
     public String refill(Model model){
+        model.addAttribute("message", service.getMyTurn().toString());
         model.addAttribute("list", service.giveMeCards());
         model.addAttribute("listComp", service.giveCompCards());
         model.addAttribute("compMove", service.getCompMove());
@@ -64,8 +65,10 @@ public class WebController {
     public String pick(Model model,
                        @PathVariable("suit") Suit suit,
                        @PathVariable("nominal") Nominal nominal){
+        System.out.println(service.getMyTurn() + " PICK");
         Card card = service.getCard(suit, nominal);
         if (service.getCompMove().size() != service.getMyMove().size() + 1){
+            model.addAttribute("message", service.getMyTurn().toString());
             model.addAttribute("list", service.getRefill());
             model.addAttribute("listComp", service.getRefillComp());
             model.addAttribute("count", service.countDeck());
@@ -74,6 +77,7 @@ public class WebController {
             model.addAttribute("trump", service.getTrumpCard());
             return "gametable";
         }
+        model.addAttribute("message", service.getMyTurn().toString());
         model.addAttribute("list", service.getRefill());
         model.addAttribute("listComp", service.getRefillComp());
         model.addAttribute("count", service.countDeck());
@@ -85,6 +89,7 @@ public class WebController {
     @RequestMapping("/computermove")
     public String pick(Model model){
         service.getCompMoveMethod();
+        model.addAttribute("message", service.getMyTurn().toString());
         model.addAttribute("list", service.getRefill());
         model.addAttribute("listComp", service.getRefillComp());
         model.addAttribute("count", service.countDeck());
@@ -98,6 +103,11 @@ public class WebController {
         service.throwTrash();
         service.giveMeCards();
         service.giveCompCards();
+        System.out.println(service.getMyTurn() + " TRASH");
+        if (service.getMyTurn() == false){
+            return "redirect:/ui/compturn";
+        }
+        model.addAttribute("message", service.getMyTurn().toString());
         model.addAttribute("list", service.getRefill());
         model.addAttribute("listComp", service.getRefillComp());
         model.addAttribute("count", service.countDeck());
@@ -109,6 +119,7 @@ public class WebController {
 @RequestMapping("/compturn")
     public String compPick(Model model) {
         service.compPick();
+    model.addAttribute("message", service.getMyTurn().toString());
         model.addAttribute("list", service.getRefill());
         model.addAttribute("listComp", service.getRefillComp());
         model.addAttribute("count", service.countDeck());

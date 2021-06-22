@@ -122,12 +122,14 @@ public class GameServiceImpl implements  IGameService{
                     .filter(card -> card.getSuit().equals(suit))
                     .findAny()
                     .orElse(empty);
-            if (compMove.size() > myMove.size()){
+        System.out.println(myPick);
+        if (compMove.size() > myMove.size()){
                 if (isMineGreater(myPick, compMove.get(compMove.size()-1))){
                     System.out.println("GREATER");
                     refill.remove(myPick);
                     myMove.add(myPick);
                     nominals.add(myPick.getNominal());
+
                     return myPick;
                 } else {
                     return null;
@@ -183,7 +185,9 @@ public class GameServiceImpl implements  IGameService{
     public boolean isMineGreater(Card mine, Card comp){
         if (mine.getSuit().equals(comp.getSuit())
                 && mine.getValue() > comp.getValue()){
-            System.out.println(true);
+            return true;
+        }
+        if (mine.getSuit().equals(trump) && !comp.getSuit().equals(trump)){
             return true;
         }
         System.out.println(false);
@@ -192,6 +196,8 @@ public class GameServiceImpl implements  IGameService{
 
     public void throwTrash() {
         nominals.clear();
+
+        // Игрок забирает карты
         if (myMove.size() < compMove.size()){
             for (Card card:compMove){
                 refill.add(card);
@@ -199,7 +205,10 @@ public class GameServiceImpl implements  IGameService{
             for (Card card:myMove) {
                 refill.add(card);
             }
+            this.myTurn = false;
         }
+
+        // Комп забирает карты
         if (compMove.contains(empty)){
             for (Card card:compMove) {
                 if (!card.equals(empty))
@@ -207,22 +216,53 @@ public class GameServiceImpl implements  IGameService{
             }
             for (Card card:myMove)
                 refillComp.add(card);
+            this.myTurn = true;
         }
-
+        this.myTurn = !myTurn;
         compMove.clear();
         myMove.clear();
         giveMeCards();
     }
     public void compPick(){
-        Card card = refillComp.stream().sorted(Comparator.comparing(Card::getValue))
-                .findFirst().get();
+        // первый ход компа
+        Card card = null;
+        if (myMove.isEmpty()) {
+            card = refillComp.stream().sorted(Comparator.comparing(Card::getValue))
+                    .findFirst().get();
+        }   else {
+            Set<Nominal> nominals = new HashSet<>();
+            for (Card card1:myMove) {
+                nominals.add(card1.getNominal());
+                for (Card card2 : compMove) {
+                    nominals.add(card2.getNominal());
+
+                }
+                card = refillComp.stream().filter(el -> nominals.contains(el.getNominal()))
+                        .findAny().orElse(null);
+                if (card == null){
+                    return;
+                }
+            }
+        if (myMove.isEmpty()){
+            myTurn = false;
+            refillComp.remove(card);
+            compMove.add(card);
+        }
         if (myMove.size() != compMove.size()){
             return;
         }
-        myTurn = false;
-        refillComp.remove(card);
-        compMove.add(card);
-    }
+        // последующие ходы компа
+        if (!myMove.isEmpty()){
+                    if (!nominals.contains(card.getNominal())){
+                        return;
+                    }
+            }
+            myTurn = false;
+            refillComp.remove(card);
+            compMove.add(card);
+            return;
+        }
+        }
     public void flipTurn() {
         myTurn = !myTurn;
     }
