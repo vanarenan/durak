@@ -1,39 +1,42 @@
 body {
-     background-color: green;
+    background-color: green;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
 }
-h1{
+h1 {
     color: darkgoldenrod;
 }
-ul{
+ul {
     display: flex;
-
 }
 li {
     list-style-type: none;
 }
-
 img {
     height: 130px;
-
-
 }
 .allCard {
     display: flex;
     border: solid 2px black;
     box-shadow: inset 0px 0px 25px 5px #ffc107;
-
     justify-content: center;
 }
-.buttons{
+.buttons {
     margin-bottom: 10px;
 }
-.myCards{
-
-}
-.card-list{
+.card-list {
     margin: 10px;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+}
+.cards-container {
+    text-align: center;
+}
+.deck-container {
+    width: 300px;
 }

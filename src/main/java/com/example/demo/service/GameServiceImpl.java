@@ -81,7 +81,7 @@ public class GameServiceImpl implements  IGameService{
             }
         refill = refill.stream().sorted(Comparator.comparing(Card::getValue))
                 .collect(Collectors.toList());
-            return refill;
+        return refill;
 
     }
     public List<Card> giveCompCards(){
@@ -173,7 +173,7 @@ public class GameServiceImpl implements  IGameService{
                .findFirst().orElse(empty);
        return compMove;
     }
- public List<Card> myPossibleFightBack() {
+    public List<Card> myPossibleFightBack() {
         Card card = compMove.get(compMove.size() - 1);
        Suit suit = card.getSuit();
        List<Card> allowed = refill.stream()
