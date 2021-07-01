@@ -79,8 +79,9 @@ public class GameServiceImpl implements  IGameService{
                     refill.add(card);
                 }
             }
-            return refill.stream().sorted(Comparator.comparing(Card::getValue))
-                    .collect(Collectors.toList());
+        refill = refill.stream().sorted(Comparator.comparing(Card::getValue))
+                .collect(Collectors.toList());
+            return refill;
 
     }
     public List<Card> giveCompCards(){
@@ -117,15 +118,16 @@ public class GameServiceImpl implements  IGameService{
         return myPick;
     }
     public Card getCard(Suit suit, Nominal nominal) {
+
+        if (this.myTurn == false && myMove.size() > compMove.size()) return null;        //////
             Card myPick = refill.stream()
                     .filter(card -> card.getNominal().equals(nominal))
                     .filter(card -> card.getSuit().equals(suit))
                     .findAny()
                     .orElse(empty);
-        System.out.println(myPick);
+
         if (compMove.size() > myMove.size()){
                 if (isMineGreater(myPick, compMove.get(compMove.size()-1))){
-                    System.out.println("GREATER");
                     refill.remove(myPick);
                     myMove.add(myPick);
                     nominals.add(myPick.getNominal());
@@ -190,7 +192,6 @@ public class GameServiceImpl implements  IGameService{
         if (mine.getSuit().equals(trump) && !comp.getSuit().equals(trump)){
             return true;
         }
-        System.out.println(false);
         return false;
     }
 
@@ -206,29 +207,36 @@ public class GameServiceImpl implements  IGameService{
                 refill.add(card);
             }
             this.myTurn = false;
+
         }
 
         // Комп забирает карты
         if (compMove.contains(empty)){
+            compMove.remove(empty);
             for (Card card:compMove) {
-                if (!card.equals(empty))
                 refillComp.add(card);
             }
             for (Card card:myMove)
                 refillComp.add(card);
             this.myTurn = true;
         }
-        this.myTurn = !myTurn;
+         if (myMove.size() == compMove.size()) this.myTurn = !myTurn;
         compMove.clear();
         myMove.clear();
         giveMeCards();
     }
+
     public void compPick(){
         // первый ход компа
         Card card = null;
         if (myMove.isEmpty()) {
             card = refillComp.stream().sorted(Comparator.comparing(Card::getValue))
-                    .findFirst().get();
+                    .findFirst().orElse(null);
+            if (refill.isEmpty()) {
+                return;
+            }
+            refillComp.remove(card);
+            compMove.add(card);
         }   else {
             Set<Nominal> nominals = new HashSet<>();
             for (Card card1:myMove) {
@@ -243,11 +251,6 @@ public class GameServiceImpl implements  IGameService{
                     return;
                 }
             }
-        if (myMove.isEmpty()){
-            myTurn = false;
-            refillComp.remove(card);
-            compMove.add(card);
-        }
         if (myMove.size() != compMove.size()){
             return;
         }

@@ -65,9 +65,12 @@ public class WebController {
     public String pick(Model model,
                        @PathVariable("suit") Suit suit,
                        @PathVariable("nominal") Nominal nominal){
-        System.out.println(service.getMyTurn() + " PICK");
         Card card = service.getCard(suit, nominal);
-        if (service.getCompMove().size() != service.getMyMove().size() + 1){
+        if (service.getCompMove().size() != service.getMyMove().size() + 1 && card != null){
+            //
+            if (service.getMyTurn() == false && service.getCompMove().size() == service.getMyMove().size()){
+                return "redirect:/ui/compturn";}
+            //
             model.addAttribute("message", service.getMyTurn().toString());
             model.addAttribute("list", service.getRefill());
             model.addAttribute("listComp", service.getRefillComp());
@@ -75,8 +78,11 @@ public class WebController {
             model.addAttribute("myMove", service.getMyMove());
             model.addAttribute("compMove", service.getCompMove());
             model.addAttribute("trump", service.getTrumpCard());
+
+
             return "gametable";
         }
+
         model.addAttribute("message", service.getMyTurn().toString());
         model.addAttribute("list", service.getRefill());
         model.addAttribute("listComp", service.getRefillComp());
@@ -103,7 +109,7 @@ public class WebController {
         service.throwTrash();
         service.giveMeCards();
         service.giveCompCards();
-        System.out.println(service.getMyTurn() + " TRASH");
+
         if (service.getMyTurn() == false){
             return "redirect:/ui/compturn";
         }
